@@ -9,3 +9,7 @@
 - STICS: [https://www6.paca.inra.fr/stics_eng/](https://www6.paca.inra.fr/stics_eng)
 - SIMUPLANT [http://www.simuplant.org/](http://www.simuplant.org/)
 - APSIM [http://www.apsim.info/](http://www.apsim.info/)
+
+## References
+
+- MEMOIRE ETHAN WALRAVENS: [https://www.dropbox.com/s/pwp3hagclen8gqw/Ethan_Walravens_2017.pdf?dl=0](DropBox file) 
