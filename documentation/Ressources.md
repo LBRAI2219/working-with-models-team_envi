@@ -12,4 +12,4 @@
 
 ## References
 
-- MEMOIRE ETHAN WALRAVENS: [https://www.dropbox.com/s/pwp3hagclen8gqw/Ethan_Walravens_2017.pdf?dl=0](DropBox file) 
+- MEMOIRE ETHAN WALRAVENS: [Download from DropBox](https://www.dropbox.com/s/pwp3hagclen8gqw/Ethan_Walravens_2017.pdf?dl=0) 
