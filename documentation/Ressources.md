@@ -13,3 +13,4 @@
 ## References
 
 - MEMOIRE ETHAN WALRAVENS: [Download from DropBox](https://www.dropbox.com/s/pwp3hagclen8gqw/Ethan_Walravens_2017.pdf?dl=0) 
+- lien vers .pdf interessant pour apprendre Lpy: http://algorithmicbotany.org/papers/lpy.fps2012.pdf
