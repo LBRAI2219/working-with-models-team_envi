@@ -1,0 +1,70 @@
+from math import *
+import random
+
+T = 0.5       # time for an apex to produce an internode
+Imature = 1.  # time for internode growth
+Ssize = 9.    # size of the flower
+
+dt = 0.1
+eps = 0.001
+
+Rmax = 10      # Maximum number of internodes on an axis
+endiam = 0.03
+enlen = 1.0
+
+#petiole
+petiolediam=0.01
+petiolelen=0.2
+
+Axiom: A(0,T)
+
+derivation length: 100
+production:
+
+A(r,t):
+  if r ==  Rmax: produce *
+  elif t < eps : produce I(0.01)L(0.01)A(r+1,T)
+  else: produce A(r,t-dt)
+  
+I(t):
+  produce I(t+dt)
+L(t):
+  produce L(t+dt)
+
+
+interpretation:
+
+###########Internode############
+I(t):
+  i=random.random() 
+  id = i*20
+  if t <= Imature: produce _(endiam*t/Imature)F(0.1+enlen*t/Imature)
+  else: produce -(id)^(id)@Tp(0,0,1 if tropism >= 0 else -1 ) Elasticity(abs(tropism)/1000.) _(endiam)nF(enlen,0.02)
+
+
+###########leaf (temporary)##########
+L(t):
+  r=random.random()
+  petioleang=40+30*r
+
+  if t<= Imature: 
+    produce:[,(2)-(90)_(petiolediam*t/Imature)F(petiolelen*t/Imature)] [,(2)+(90)_(petiolediam*t/Imature)F(petiolelen*t/Imature)]
+  else: 
+    produce [,(2)-(petioleang)_(petiolediam)F(petiolelen)~l(0.1*t)][,(2)+(petioleang)_(petiolediam)F(petiolelen)~l(0.1*t)]
+
+
+###########glands###########
+R(t):
+  produce:[,(2)_(0.02)+(140)F(0.5),(2)@O(0.05)][,(2)_(0.02)-(140)F(0.5),(2)@O(0.05)]
+
+
+endlsystem
+###### INITIALISATION ######
+
+__lpy_code_version__ = 1.1
+
+def __initialiseContext__(context):
+	scalars = [('tropism', 29, -50, 100)]
+	context["__scalars__"] = scalars
+	for n,v,mnv,mxv in scalars:
+		context[n] = v
