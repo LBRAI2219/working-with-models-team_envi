@@ -1,0 +1,112 @@
+from math import *
+import random
+
+T = 0.5       # time for an apex to produce an internode
+Imature = 1.  # time for internode growth
+Lmature = 1.  # time for leaf growth
+Cmature = 1.  # time for cones growth
+
+#environmental parameters
+tropism=35
+gravity=-40
+Lgravity=-15
+
+#Apex
+dt = 0.1       # time step
+eps = 0.001    # cst
+Rmax = 10      # Maximum number of internodes on an axis
+
+#Internode
+endiam = 0.02  #
+enlen = 1.0
+Iangl=10
+
+#Leaf
+length = 0.5
+dl = 0.005
+globalwidth = 0.5
+
+#petiole
+petiolediam=0.01
+petiolelen=0.2
+
+#cones
+Clen=0.3
+Cdiam=0.008
+Axiom: +(5)^(8.5)A(0,T)
+
+derivation length: 100
+production:
+
+A(r,t):
+  if r ==  Rmax: produce *
+  elif t < eps : produce I(0.01)L(0.01)C(0.01)A(r+1,T)
+  else: produce A(r,t-dt)
+  
+I(t):
+  produce I(t+dt)
+L(t):
+  produce L(t+dt)
+C(t):
+  produce C(t+dt)
+
+
+interpretation:
+
+###########Internode############
+I(t):
+  #i=random.random() 
+  #id = i*20
+  if t <= Imature: produce _(endiam*t/Imature)F(0.1+enlen*t/Imature)
+  else: produce -(Iangl)/@Tp(0,0,1 if tropism >= 0 else -1 ) Elasticity(abs(tropism)/1000.) _(endiam)nF(enlen,0.02)
+  #_(endiam)-(10)/F(enlen) 
+  #-(id)^(id)@Tp(0,0,1 if tropism >= 0 else -1 ) Elasticity(abs(tropism)/1000.) _(endiam)nF(enlen,0.02)
+
+
+###########leaf (temporary)##########
+L(t):
+  r=random.random()
+  petioleang=40+30*r
+  if t<= Lmature: 
+    produce:[,(2)-(90)_(petiolediam*t/Lmature)F(petiolelen*t/Lmature)] [,(2)+(90)_(petiolediam*t/Lmature)F(petiolelen*t/Lmature)]
+  else: 
+    produce [,(2)-(petioleang)_(petiolediam)F(petiolelen),(2) \(90)@Tp(0,0,1 if Lgravity >= 0 else -1 ) Elasticity(abs(Lgravity)/1000.)Sweep(path,section,length,dl,globalwidth,leafwidth)][,(2)+(petioleang)_(petiolediam)F(petiolelen),(2) /(90)@Tp(0,0,1 if Lgravity >= 0 else -1 ) Elasticity(abs(Lgravity)/1000.)Sweep(path,section,length,dl,globalwidth,leafwidth)]
+
+
+###########Cones###########
+C(t):
+  z=random.random()
+  Cang=140+30*z
+  if t<= Cmature: 
+    produce:[,(2)@Tp(0,0,1 if gravity >= 0 else -1 ) Elasticity(abs(gravity)/1000.)+(140)_(Cdiam*t/Cmature)nF(Clen*t/Cmature,0.02)][,(2)@Tp(0,0,1 if gravity >= 0 else -1 ) Elasticity(abs(gravity)/1000.)-(140)_(Cdiam*t/Cmature)nF(Clen*t/Cmature,0.02)]
+  else: 
+    produce [,(2)@Tp(0,0,1 if gravity >= 0 else -1 ) Elasticity(abs(gravity)/1000.)+(Cang)_(Cdiam)nF(Clen,0.02),(2)@O(0.005*t)][,(2)@Tp(0,0,1 if gravity >= 0 else -1 ) Elasticity(abs(gravity)/1000.)-(Cang)_(Cdiam)nF(Clen,0.02),(2)@O(0.005*t)]
+
+endlsystem
+###### INITIALISATION ######
+
+__lpy_code_version__ = 1.1
+
+def __initialiseContext__(context):
+	import openalea.plantgl.all as pgl
+	path = pgl.NurbsCurve2D(	
+	    ctrlPointList = pgl.Point3Array([(-0.5, 0, 1),(-0.10718, 0.122029, 1),(0.247623, -0.076258, 1),(0.429364, -0.331982, 1)]) , 
+	    )
+	path.name = "path"
+	section = pgl.NurbsCurve2D(	
+	    ctrlPointList = pgl.Point3Array([(-0.508658, 0.112554, 1),(-0.162338, -0.155844, 1),(-0.0238095, 0.158009, 1),(0.192641, -0.177489, 1),(0.582251, 0.168831, 1)]) , 
+	    )
+	section.name = "section"
+	import openalea.plantgl.all as pgl
+	leafwidth = pgl.NurbsCurve2D(	
+	    ctrlPointList = pgl.Point3Array([(0, 0.000994103, 1),(0, 0.158772, 1),(0, 0.356443, 1),(0.0351796, 0.452496, 1),(0.143745, 0.683558, 1),(0.278113, 0.561842, 1),(0.281763, 0.158649, 1),(0.521423, 0.564542, 1),(0.746099, 0.399506, 1),(1, 0, 1)]) , 
+	    )
+	leafwidth.name = "leafwidth"
+	panel_0 = ({'active': True, 'visible': False, 'name': 'Panel 2'},[('Curve2D',path),('Curve2D',section),('Function',leafwidth)])
+	parameterset = [panel_0,]
+	context["__functions__"] = [('leafwidth',leafwidth),]
+	context["__curves__"] = [('path',path),('section',section),]
+	context["__parameterset__"] = parameterset
+	context["path"] = path
+	context["section"] = section
+	context["leafwidth"] = pgl.QuantisedFunction(leafwidth)
