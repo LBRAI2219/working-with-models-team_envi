@@ -69,7 +69,7 @@ L(t):
   r=random.random()
   petioleang=40+30*r
   if t<= Lmature: 
-    produce:[,(2)-(90)_(petiolediam*t/Lmature)F(petiolelen*t/Lmature)] [,(2)+(90)_(petiolediam*t/Lmature)F(petiolelen*t/Lmature)]
+    produce:[,(2)-(90)\(90)_(petiolediam*t/Lmature)F(petiolelen*t/Lmature)] [,(2)+(90)/(90)_(petiolediam*t/Lmature)F(petiolelen*t/Lmature)]
   else: 
     produce [,(2)-(petioleang)_(petiolediam)F(petiolelen),(2) \(90)@Tp(0,0,1 if Lgravity >= 0 else -1 ) Elasticity(abs(Lgravity)/1000.)Sweep(path,section,length,dl,globalwidth,leafwidth)][,(2)+(petioleang)_(petiolediam)F(petiolelen),(2) /(90)@Tp(0,0,1 if Lgravity >= 0 else -1 ) Elasticity(abs(Lgravity)/1000.)Sweep(path,section,length,dl,globalwidth,leafwidth)]
 
